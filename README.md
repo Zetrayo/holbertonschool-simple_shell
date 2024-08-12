@@ -1,5 +1,18 @@
 # C - Simple Shell
 
+# Table of Contents
+
+1. [Description](#description)
+2. [Fonctionnalités](#fonctionnalités)
+3. [Compilation](#compilation)
+4. [Utilisation](#utilisation)
+   - [Mode interactif](#mode-interactif)
+   - [Mode non-interactif](#mode-non-interactif)
+5. [Exigences du Projet](#exigences-du-projet)
+6. [Liste des Fonctions et Appels Système Autorisés](#liste-des-fonctions-et-appels-système-autorisés)
+7. [Auteurs](#auteurs)
+8. [Références](#références)
+
 ## Description
 
 Ce projet consiste à créer un interpréteur de commandes simple, similaire au shell UNIX traditionnel. L'objectif est de comprendre le fonctionnement interne des shells, d'apprendre à gérer les processus, les appels système, et à manipuler l'environnement d'exécution. Le projet suit les directives de style de code Betty et se conforme aux spécifications pour fonctionner sur Ubuntu 20.04 LTS.
