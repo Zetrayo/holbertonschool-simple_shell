@@ -1,0 +1,86 @@
+.TH SIMPLE_SHELL 1 "August 2024" "1.0" "Simple Shell Manual"
+.SH NAME
+simple_shell \- A simple UNIX command interpreter
+
+.SH SYNOPSIS
+.B simple_shell
+[\fIoptions\fR]
+
+.SH DESCRIPTION
+.B simple_shell
+Is a simple UNIX command interpreter that mimics the behavior of the standard UNIX shell. It reads commands from the user, parses them, and executes them as if they were entered in a standard shell.
+
+The simple_shell supports the execution of built-in commands as well as external commands found in the system's PATH. It also handles basic error reporting, argument parsing, and process management.
+
+.SH OPTIONS
+.B simple_shell
+Does not have any command-line options. It runs interactively by default, waiting for user input in a loop until the user exits the shell.
+
+.SH COMMANDS
+The following commands are built into
+.B simple_shell:
+
+.TP
+.B cd
+Change the current directory.
+Usage:
+.I "cd [directory]"
+Changes the working directory of the shell to the directory specified. If no directory is given, it changes to the home directory.
+
+.TP
+.B exit
+Exit the shell. Usage:
+.I "exit [status]"
+Exits the shell with the specified status. If no status is given, exits with the status of the last command executed.
+
+.TP
+.B help
+Display a help message with a list of built-in commands.
+
+.BR
+
+.SH USAGE
+
+.B simple_shell
+Is run, it displays a prompt where the user can enter commands. The shell will then execute the command and return to the prompt.
+
+For example:
+
+.EX
+$ simple_shell
+simple_shell> ls -l
+total 64
+-rwxrwxr-x 1 user user 16384 Aug 12 12:34 hsh
+-rw-rw-r-- 1 user user  1048 Aug 12 12:30 main.c
+simple_shell> echo "Hello, World!"
+Hello, World!
+simple_shell> exit
+$
+.EE
+
+.SH EXIT STATUS
+
+.B simple_shell
+Exits with the status of the last command executed. 
+.B exit
+Command is used, the shell will exit with the status specified by the user.
+
+.SH FILES
+
+.B simple_shell
+Does not use any external configuration files. All functionality is implemented within the binary.
+
+.SH BUGS
+No known bugs at this time. If you encounter any issues, please report them to the project maintainers.
+
+.SH AUTHOR
+This man page was written by José Puertas and Guney Tasdelen as part of the Simple Shell project for Holberton School.
+
+.SH COPYRIGHT
+This is free software; you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.
+
+.SH SEE ALSO
+.BR bash (1),
+.BR sh (1),
+.BR zsh (1),
+.BR ksh (1)
