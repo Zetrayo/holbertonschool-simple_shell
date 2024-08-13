@@ -12,11 +12,6 @@
 #include <fcntl.h>
 #include <errno.h>
 
-typedef struct liststr
-{
-	int num;
-	char *str;
-	struct liststr *next;
-} list_t;
+
 
 #endif
