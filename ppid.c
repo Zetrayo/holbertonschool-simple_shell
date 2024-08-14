@@ -7,9 +7,9 @@
  */
 int main(void)
 {
-    pid_t parent_pid;
+	pid_t parent_pid;
 
-    parent_pid = getppid();
-    printf("%u\n", parent_pid);
-    return (0);
+	parent_pid = getppid();
+	printf("%u\n", parent_pid);
+	return (0);
 }
