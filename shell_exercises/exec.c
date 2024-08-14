@@ -1,11 +1,11 @@
 #include "shell.h"
 
 /**
- * main - execve example
+ * _execve - execve example
  *
  * Return: Always 0.
  */
-int main(void)
+int _execve(void)
 {
 	char *argv[] = {"/bin/ls", "-l", "/usr/", NULL};
 

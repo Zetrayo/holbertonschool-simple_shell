@@ -1,11 +1,11 @@
 #include "shell.h"
 
 /**
- * main - fork & wait example
+ * _wait - fork & wait example
  *
  * Return: Always 0.
  */
-int main(void)
+int _wait(void)
 {
 	pid_t child_pid;
 	int status;

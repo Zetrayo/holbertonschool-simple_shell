@@ -5,10 +5,10 @@
  */
 void execute_command(char *cmd)
 {
-	char *argv[100];				/* Array to hold command arguments */
-	int argc = 0;					/* Argument count */
+	char *argv[100];				/** Array to hold command arguments */
+	int argc = 0, status;				/** Argument count */
 	char *token = strtok(cmd, " ");
-	pid_t pid;	/* Tokenize the command */
+	pid_t pid;	/** Tokenize the command */
 
 	while (token != NULL)
 	{
@@ -16,19 +16,14 @@ void execute_command(char *cmd)
 		token = strtok(NULL, " ");
 		argc++;
 	}
-	argv[argc] = NULL;				/* NULL-terminate the argument list */
+	argv[argc] = NULL;				/** NULL-terminate the argument list */
+	if (argc == 0)					/** No command entered */
+		return;
 
-	if (argc == 0)					/* No command entered */
+	if (check_builtin_commands(argv[0]))/** Check for built-in commands */
 	{
 		return;
 	}
-
-	/* Check for built-in commands */
-	if (check_builtin_commands(argv[0]))
-	{
-		return;
-	}
-
 	pid = fork();
 	if (pid == 0)
 	{
@@ -39,15 +34,11 @@ void execute_command(char *cmd)
 		}
 	}
 	else if (pid < 0)
-	{
-		/* Fork failed */
-		perror("fork");
-	}
+		perror("fork");/** Fork failed */
+
 	else
 	{
-		/* Parent process */
-		int status;
-		waitpid(pid, &status, 0);
+		waitpid(pid, &status, 0);/** Parent process */
 	}
 }
 /**
@@ -55,10 +46,11 @@ void execute_command(char *cmd)
  * @cmd: Command to check.
  * Return: 1 if command is built-in, 0 otherwise.
  */
-extern char **environ;
 
 int check_builtin_commands(char *cmd)
 {
+	char **env = environ;
+
 	if (strcmp(cmd, "exit") == 0)
 	{
 		exit(EXIT_SUCCESS);
@@ -66,7 +58,6 @@ int check_builtin_commands(char *cmd)
 	}
 	else if (strcmp(cmd, "env") == 0)
 	{
-		char **env = environ;
 		while (*env)
 		{
 			printf("%s\n", *env++);
