@@ -82,7 +82,7 @@ int main(void)
 		if (cmd == NULL)
 		{
 			free(cmd);
-			continue;
+			return (0);
 		}
 
 		execute_command(cmd);
