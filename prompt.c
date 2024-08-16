@@ -16,23 +16,34 @@ void prompt(void)
 char *read_command(void)
 {
 	char *buffer = malloc(BUFSIZE);
-	size_t length;  /** Déclaration au début du bloc */
+	int bytes_read;  		/* Nombre de bytes lus par read */
 
-	if (!buffer)
-	{
+	if (!buffer) {
 		fprintf(stderr, "allocation error\n");
 		exit(EXIT_FAILURE);
 	}
-	if (fgets(buffer, BUFSIZE, stdin) == NULL)
-	{
+
+	/* Utilisation de read pour lire depuis stdin */
+	bytes_read = read(STDIN_FILENO, buffer, BUFSIZE - 1);
+    
+	if (bytes_read < 0) { 	/* Gestion des erreurs de read */
+		perror("read");
 		free(buffer);
-		return (NULL);  /** Gestion de EOF ou d'erreur de lecture */
+		return NULL;
 	}
-	/** Trim the newline character from the buffer if present */
-	length = strlen(buffer);
-	if (length > 0 && buffer[length - 1] == '\n')
-	{
-		buffer[length - 1] = '\0';
+
+	if (bytes_read == 0) {  /* EOF ou aucun caractère lu */
+		free(buffer);
+		return NULL;
 	}
-	return (buffer);
+
+	/* Assurer que la chaîne est terminée par un caractère nul */
+	buffer[bytes_read] = '\0';
+
+	/* Trim the newline character from the buffer if present */
+	if (bytes_read > 0 && buffer[bytes_read - 1] == '\n') {
+		buffer[bytes_read - 1] = '\0';
+	}
+
+	return buffer;
 }
