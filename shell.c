@@ -1,7 +1,11 @@
 #include "shell.h"
 /**
- * Execute a command or lauch an appropriate executable.
- * @cmd: Full commandline input.
+ * execute_command - Executes a command or launches an appropriate executable
+ * @cmd: Full command line input
+ *
+ * Description: Takes a full command line input, tokenizes it to form arguments
+ * and if the command is not a built-in command, it forks a child process and
+ * executes the command using execvp.
  */
 void execute_command(char *cmd)
 {
@@ -42,11 +46,13 @@ void execute_command(char *cmd)
 	}
 }
 /**
- * Check and execute built-in commands.
- * @cmd: Command to check.
- * Return: 1 if command is built-in, 0 otherwise.
+ * check_builtin_commands - Check and execute built-in commands
+ * @cmd: Command to check
+ * Return: 1 if command is built-in, 0 otherwise
+ *
+ * Description: Checks if the command is a built-in command such as 'exit'
+ * or 'env'. If it is, the command is executed directly by the shell.
  */
-
 int check_builtin_commands(char *cmd)
 {
 	char **env = environ;
@@ -68,8 +74,12 @@ int check_builtin_commands(char *cmd)
 }
 
 /**
- * main - Simple shell implementation in C.
- * Return: Always 0.
+ * main - Entry point for a simple shell implementation
+ * Return: Always 0
+ *
+ * Description: Runs a continuous loop that displays a prompt, reads a
+ * command, and executes it. It will only terminate when an 'exit' command
+ * is executed or an error occurs.
  */
 int main(void)
 {
