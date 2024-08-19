@@ -97,8 +97,11 @@ void execute_command(char *cmd)
 	if (argc == 0)
 		return;
 
-	if (check_builtin_commands(argv[0]))
+	if (check_builtin_commands(argv[0]) == 1)
 		return;
+
+	if (check_builtin_commands(argv[0]) == 3)
+		argv[0] = "ls";
 
 	if (find_path(full_path, sizeof(full_path), argv[0], path) != 0)
 	{
@@ -115,13 +118,10 @@ void execute_command(char *cmd)
 		}
 	}
 	else if (pid < 0)
-	{
 		perror("fork");
-	}
+
 	else
-	{
 		waitpid(pid, &status, 0);
-	}
 }
 
 /**
@@ -182,6 +182,10 @@ int check_builtin_commands(char *cmd)
 			printf("%s\n", *env++);
 		}
 		return (1);
+	}
+	else if (_strcmp(cmd, "/bin/ls") == 0)
+	{
+		return (3);
 	}
 	return (0);
 }
