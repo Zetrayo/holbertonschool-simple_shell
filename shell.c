@@ -57,19 +57,19 @@ void prompt(void)
  */
 int main(void)
 {
-	char *command = NULL;
+	char *cmd = NULL;
 
 	while (1)
 	{
 		prompt();
-		command = read_command();
-		if (command == NULL)
+		cmd = read_command();
+		if (cmd == NULL)
 		{
-			free(command);
+			free(cmd);
 			return (0);
 		}
-		execute_command(command);
-		free(command);
+		execute_command(cmd);
+		free(cmd);
 	}
 	return (0);
 }

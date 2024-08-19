@@ -51,10 +51,10 @@ char *read_command(void)
  */
 void execute_command(char *cmd)
 {
+	pid_t pid;
 	int argc = 0, status;
-	pid_t pid = fork();
-	char *token = strtok(cmd, " "), *argv[BUFSIZE];
-	char *path = _getenv("PATH"), full_path[BUFSIZE];
+	char *token = strtok(cmd, " "), full_path[BUFSIZE];
+	char *argv[BUFSIZE], *path = _getenv("PATH");
 
 	while (token != NULL)
 	{
@@ -73,6 +73,7 @@ void execute_command(char *cmd)
 		fprintf(stderr, "Command not found: %s\n", argv[0]);
 		return;
 	}
+	pid = fork();
 	if (pid == 0)
 	{
 		if (execve(full_path, argv, environ) == -1)
@@ -103,6 +104,7 @@ char *_getenv(const char *name)
 
 	if (!name)
 		return (NULL);
+
 	for (i = 0; environ[i]; i++)
 	{
 		j = 0;
