@@ -1,6 +1,31 @@
 #include "shell.h"
 
 /**
+ * _strcmp - Entry point
+ * Description: 'compares string to another string'
+ *
+ * @a: pointer pointing to string
+ * @b: pointer pointing to string
+ * Return: 0 (Success)
+ */
+int _strcmp(char *a, char *b)
+{
+	int c = 0;
+
+	while (*a == *b)
+	{
+		if (*a == '\0' && *b == '\0')
+		{
+			return (0);
+		}
+		a++;
+		b++;
+	}
+	c = (*a - *b);
+	return (c);
+}
+
+/**
  * read_command - Reads a command from standard input
  * Return: dynamically allocated string with the command, or NULL on failure
  */
@@ -145,12 +170,12 @@ int check_builtin_commands(char *cmd)
 {
 	char **env = environ;
 
-	if (strcmp(cmd, "exit") == 0)
+	if (_strcmp(cmd, "exit") == 0)
 	{
 		exit(EXIT_SUCCESS);
 		return (1);
 	}
-	else if (strcmp(cmd, "env") == 0)
+	else if (_strcmp(cmd, "env") == 0)
 	{
 		while (*env)
 		{

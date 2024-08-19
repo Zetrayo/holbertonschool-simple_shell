@@ -32,6 +32,9 @@ void execute_command(char *cmd);
 int check_builtin_commands(char *cmd);
 char *_getenv(const char *name);
 int find_path(char *result_path, size_t size, char *command, char *path);
+int _strlen(char *a);
+int _strcmp(char *a, char *b);
+char *_strcpy(char *dest, char *src);
 
 extern char **environ;
 

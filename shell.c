@@ -1,6 +1,47 @@
 #include "shell.h"
 
 /**
+ * _strlen - Entry point
+ * Description: 'counts string lenght'
+ *
+ * @a: pointer pointing to string
+ * Return: 0 (Success)
+ */
+
+int _strlen(char *a)
+{
+	int c = 0;
+
+	while (a[c] != '\0')
+	{
+		c++;
+	}
+	return (c);
+}
+
+/**
+ * _strcpy - Entry point
+ * Description: 'copies a string into a new string'
+ *
+ * @dest: pointer pointing to string
+ * @src: pointer pointing to string
+ * Return: 0 (Success)
+ */
+
+char *_strcpy(char *dest, char *src)
+{
+	int c = 0;
+
+	while (src[c] != '\0')
+	{
+		dest[c] = src[c];
+		c++;
+	}
+	dest[c] = '\0';
+	return (dest);
+}
+
+/**
  * find_path - Resolves the full path of an executable from PATH
  * @result_path: Buffer to store the resolved path
  * @size: Size of the buffer
@@ -18,11 +59,11 @@ int find_path(char *result_path, size_t size, char *command, char *path)
 	if (command == NULL || path == NULL || result_path == NULL)
 		return (-1);
 
-	path_copy = malloc(strlen(path) + 1);
+	path_copy = malloc(_strlen(path) + 1);
 	if (path_copy == NULL)
 		return (-1);
 
-	strcpy(path_copy, path);
+	_strcpy(path_copy, path);
 	token = strtok(path_copy, ":");
 	while (token != NULL)
 	{
