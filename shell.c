@@ -13,6 +13,7 @@ int find_path(char *result_path, size_t size, char *command, char *path)
 	char *path_copy;
 	char *token;
 	char current_path[BUFSIZE];
+	size_t j;
 
 	if (command == NULL || path == NULL || result_path == NULL)
 		return (-1);
@@ -28,7 +29,10 @@ int find_path(char *result_path, size_t size, char *command, char *path)
 		sprintf(current_path, "%s/%s", token, command);
 		if (access(current_path, X_OK) == 0)
 		{
-			memcpy(result_path, current_path, size);
+			for (j = 0; j < size; j++)
+			{
+				result_path[j] = current_path[j];
+			}
 			free(path_copy);
 			return (0);
 		}

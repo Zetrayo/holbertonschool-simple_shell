@@ -6,14 +6,14 @@
  */
 char *read_command(void)
 {
-	char *buffer = malloc(BUFSIZE);
-	int bytes_read, i = 0;
+	char *buffer, *new_buffer;
+	int bytes_read, i = 0, j;
+	int bufsize = BUFSIZE;
 
+	buffer = (char *)malloc(bufsize);
 	if (buffer == NULL)
-	{
-		fprintf(stderr, "allocation error\n");
 		exit(EXIT_FAILURE);
-	}
+
 	while (1)
 	{
 		bytes_read = read(STDIN_FILENO, buffer + i, 1);
@@ -28,14 +28,21 @@ char *read_command(void)
 			break;
 		}
 		i++;
-		if (i >= BUFSIZE - 1)
+		if (i >= bufsize - 1)
 		{
-			buffer = realloc(buffer, BUFSIZE + BUFSIZE);
-			if (buffer == NULL)
+			bufsize += 1;
+			new_buffer = (char *)malloc(bufsize);
+			if (new_buffer == NULL)
 			{
 				fprintf(stderr, "allocation error\n");
+				free(buffer);
 				exit(EXIT_FAILURE);
 			}
+			for (j = 0; j < i; j++)
+				new_buffer[j] = buffer[j];
+
+			free(buffer);
+			buffer = new_buffer;
 		}
 	}
 	return (buffer);
