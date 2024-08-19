@@ -16,38 +16,72 @@ void prompt(void)
 char *read_command(void)
 {
 	char *buffer = malloc(BUFSIZE);
-	int bytes_read;				/* Nombre de bytes lus par read */
+	int bytes_read;
+	int i = 0;
 
-	if (!buffer)
+	if (buffer == NULL)
 	{
 		fprintf(stderr, "allocation error\n");
 		exit(EXIT_FAILURE);
 	}
 
-	/* Utilisation de read pour lire depuis stdin */
-	bytes_read = read(STDIN_FILENO, buffer, BUFSIZE - 1);
-
-	if (bytes_read < 0)
-	{	/* Gestion des erreurs de read */
-		perror("read");
-		free(buffer);
-		return (NULL);
-	}
-
-	if (bytes_read == 0)
-	{	/* EOF ou aucun caractère lu */
-		free(buffer);
-		return (NULL);
-	}
-
-	/* Assurer que la chaîne est terminée par un caractère nul */
-	buffer[bytes_read] = '\0';
-
-	/* Trim the newline character from the buffer if present */
-	if (bytes_read > 0 && buffer[bytes_read - 1] == '\n')
+	while (1)
 	{
-		buffer[bytes_read - 1] = '\0';
+		bytes_read = read(STDIN_FILENO, buffer + i, 1);
+		if (bytes_read <= 0)
+		{
+			free(buffer);
+			return (NULL);
+		}
+		if (buffer[i] == '\n')
+		{
+			buffer[i] = '\0';
+			break;
+		}
+		i++;
+		if (i >= BUFSIZE - 1)
+		{
+			buffer = realloc(buffer, BUFSIZE + BUFSIZE);
+			if (buffer == NULL)
+			{
+				fprintf(stderr, "allocation error\n");
+				exit(EXIT_FAILURE);
+			}
+		}
 	}
-
 	return (buffer);
+}
+
+/**
+ * _getenv - gets the value of the global variable
+ * @name: name of the global variable
+ * Return: string of value
+ */
+char *_getenv(const char *name)
+{
+	int i, j;
+	char *value;
+
+	if (!name)
+		return (NULL);
+	for (i = 0; environ[i]; i++)
+	{
+		j = 0;
+		if (name[j] == environ[i][j])
+		{
+			while (name[j])
+			{
+				if (name[j] != environ[i][j])
+					break;
+
+				j++;
+			}
+			if (name[j] == '\0')
+			{
+				value = (environ[i] + j + 1);
+				return (value);
+			}
+		}
+	}
+	return (0);
 }
