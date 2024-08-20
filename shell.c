@@ -122,5 +122,6 @@ int main(int argc, char **prog_name)
 		execute_command(cmd, prog_name[0]);
 		free(cmd);
 	}
+	free(cmd);
 	return (0);
 }

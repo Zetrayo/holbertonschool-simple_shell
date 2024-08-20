@@ -32,13 +32,14 @@ int _strcmp(char *a, char *b)
 char *read_command(void)
 {
 	char *buffer, *new_buffer;
-	int bytes_read, i = 0, j;
-	int bufsize = BUFSIZE;
+	int bytes_read, i = 0, j, bufsize = BUFSIZE;
 
 	buffer = (char *)malloc(bufsize);
 	if (buffer == NULL)
+	{
+		free(buffer);
 		exit(EXIT_FAILURE);
-
+	}
 	while (1)
 	{
 		bytes_read = read(STDIN_FILENO, buffer + i, 1);
@@ -65,7 +66,6 @@ char *read_command(void)
 			}
 			for (j = 0; j < i; j++)
 				new_buffer[j] = buffer[j];
-
 			free(buffer);
 			buffer = new_buffer;
 		}
@@ -121,6 +121,7 @@ int check_builtin_commands(char *cmd)
 
 	if (_strcmp(cmd, "exit") == 0)
 	{
+		free(cmd);
 		exit(EXIT_SUCCESS);
 		return (1);
 	}
