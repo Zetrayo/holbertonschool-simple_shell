@@ -29,7 +29,7 @@ void execute_command(char *cmd, char *prog_name)
 	{
 		if (execve(full_path, argv, environ) == -1)
 		{
-			perror("execve");
+			perror("prog_name");
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -71,7 +71,7 @@ int prepare_command(char *cmd, char *full_path, char **argv)
 		return (-1);
 
 	if (check_builtin_commands(argv[0]) == 1)
-		return (-1);
+		return (1);
 
 	if (argv[0][0] == '/' || argv[0][0] == '.' || strncmp(argv[0], "../", 3) == 0)
 	{
