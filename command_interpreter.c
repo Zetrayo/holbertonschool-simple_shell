@@ -18,7 +18,7 @@ void execute_command(char *cmd, char *prog_name)
 	if (mem == -1)
 	{
 		fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0]);
-		return;
+		exit(127);		/* Return status code 127 for order not found */
 	}
 	else if (mem == 1)
 	{
@@ -73,7 +73,7 @@ int prepare_command(char *cmd, char *full_path, char **argv)
 	if (check_builtin_commands(argv[0]) == 1)
 		return (-1);
 
-	if (argv[0][0] == '/' || argv[0][0] == '.')
+	if (argv[0][0] == '/' || argv[0][0] == '.' || strncmp(argv[0], "../", 3) == 0)
 	{
 		_strncpy(full_path, argv[0], BUFSIZE - 1);
 		full_path[BUFSIZE - 1] = '\0';
