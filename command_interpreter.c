@@ -73,7 +73,7 @@ int prepare_command(char *cmd, char *full_path, char **argv)
 	if (check_builtin_commands(argv[0]) == 1)
 		return (-1);
 
-	if (argv[0][0] == '/')
+	if (argv[0][0] == '/' || argv[0][0] == '.')
 	{
 		_strncpy(full_path, argv[0], BUFSIZE - 1);
 		full_path[BUFSIZE - 1] = '\0';
