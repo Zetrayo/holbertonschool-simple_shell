@@ -88,7 +88,7 @@ int find_path(char *result_path, size_t size, char *command, char *path)
  */
 void prompt(void)
 {
-	printf("$ ");
+	printf("($) ");
 	fflush(stdout);
 }
 
@@ -105,6 +105,7 @@ void prompt(void)
 int main(int argc, char **prog_name)
 {
 	char *cmd = NULL;
+	int interactive = isatty(STDIN_FILENO);
 
 	if (argc == 404)
 	{
@@ -112,7 +113,10 @@ int main(int argc, char **prog_name)
 	}
 	while (1)
 	{
-		prompt();
+		if (interactive)
+		{
+			prompt();
+		}
 		cmd = read_command();
 		if (cmd == NULL)
 		{
