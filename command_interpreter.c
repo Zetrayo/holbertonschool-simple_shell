@@ -1,111 +1,27 @@
 #include "shell.h"
 
 /**
- * _strcmp - Entry point
- * Description: 'compares string to another string'
- *
- * @a: pointer pointing to string
- * @b: pointer pointing to string
- * Return: 0 (Success)
- */
-int _strcmp(char *a, char *b)
-{
-	int c = 0;
-
-	while (*a == *b)
-	{
-		if (*a == '\0' && *b == '\0')
-		{
-			return (0);
-		}
-		a++;
-		b++;
-	}
-	c = (*a - *b);
-	return (c);
-}
-
-/**
- * read_command - Reads a command from standard input
- * Return: dynamically allocated string with the command, or NULL on failure
- */
-char *read_command(void)
-{
-	char *buffer, *new_buffer;
-	int bytes_read, i = 0, j;
-	int bufsize = BUFSIZE;
-
-	buffer = (char *)malloc(bufsize);
-	if (buffer == NULL)
-		exit(EXIT_FAILURE);
-
-	while (1)
-	{
-		bytes_read = read(STDIN_FILENO, buffer + i, 1);
-		if (bytes_read <= 0)
-		{
-			free(buffer);
-			return (NULL);
-		}
-		if (buffer[i] == '\n')
-		{
-			buffer[i] = '\0';
-			break;
-		}
-		i++;
-		if (i >= bufsize - 1)
-		{
-			bufsize += 1;
-			new_buffer = (char *)malloc(bufsize);
-			if (new_buffer == NULL)
-			{
-				fprintf(stderr, "allocation error\n");
-				free(buffer);
-				exit(EXIT_FAILURE);
-			}
-			for (j = 0; j < i; j++)
-				new_buffer[j] = buffer[j];
-
-			free(buffer);
-			buffer = new_buffer;
-		}
-	}
-	return (buffer);
-}
-
-/**
  * execute_command - Executes a command or launches an appropriate executable
  * @cmd: Full command line input
- *
+ * @prog_name: Name of the program
  * Description: Takes a full command line input, tokenizes it to form arguments
  * and if the command is not a built-in command, it forks a child process and
  * executes the command using execve.
  */
-void execute_command(char *cmd)
+void execute_command(char *cmd, char *prog_name)
 {
 	pid_t pid;
-	int argc = 0, status;
-	char *token = strtok(cmd, " "), full_path[BUFSIZE];
-	char *argv[BUFSIZE], *path = _getenv("PATH");
+	int status, mem;
+	char full_path[BUFSIZE], *argv[BUFSIZE];
 
-	while (token != NULL)
+	mem = prepare_command(cmd, full_path, argv);
+	if (mem == -1)
 	{
-		argv[argc++] = token;
-		token = strtok(NULL, " ");
+		fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0]);
+		return;
 	}
-	argv[argc] = NULL;
-	if (argc == 0)
-		return;
-
-	if (check_builtin_commands(argv[0]) == 1)
-		return;
-
-	if (check_builtin_commands(argv[0]) == 3)
-		argv[0] = "ls";
-
-	if (find_path(full_path, sizeof(full_path), argv[0], path) != 0)
+	else if (mem == 1)
 	{
-		fprintf(stderr, "Command not found: %s\n", argv[0]);
 		return;
 	}
 	pid = fork();
@@ -118,74 +34,99 @@ void execute_command(char *cmd)
 		}
 	}
 	else if (pid < 0)
+	{
 		perror("fork");
-
+	}
 	else
+	{
 		waitpid(pid, &status, 0);
+	}
 }
 
 /**
- * _getenv - Gets the value of the global variable
- * @name: name of the global variable
- * Return: string of value
+ * prepare_command - Prepares the command and its arguments
+ * @cmd: Command string to process
+ * @full_path: Buffer to store the full path of the command
+ * @argv: Array to store the command and its arguments
+ * Return: 0 on success, -1 if the command is not found
  */
-char *_getenv(const char *name)
+int prepare_command(char *cmd, char *full_path, char **argv)
 {
-	int i, j;
-	char *value;
+	int argc = 0;
+	char *token, *path;
 
-	if (!name)
-		return (NULL);
+	while (*cmd == ' ' || *cmd == '\t')
+		cmd++;
 
-	for (i = 0; environ[i]; i++)
+	if (*cmd == '\0')
+		return (1);
+	token = strtok(cmd, " ");
+	while (token != NULL && argc < BUFSIZE - 1)
 	{
-		j = 0;
-		if (name[j] == environ[i][j])
-		{
-			while (name[j])
-			{
-				if (name[j] != environ[i][j])
-					break;
+		argv[argc++] = token;
+		token = strtok(NULL, " ");
+	}
+	argv[argc] = NULL;
+	if (argc == 0)
+		return (-1);
 
-				j++;
-			}
-			if (name[j] == '\0')
-			{
-				value = (environ[i] + j + 1);
-				return (value);
-			}
+	if (check_builtin_commands(argv[0]) == 1)
+		return (-1);
+
+	if (argv[0][0] == '/')
+	{
+		_strncpy(full_path, argv[0], BUFSIZE - 1);
+		full_path[BUFSIZE - 1] = '\0';
+	}
+	else
+	{
+		path = _getenv("PATH");
+		if (find_path(full_path, BUFSIZE, argv[0], path) != 0)
+		{
+			return (-1);
 		}
 	}
 	return (0);
 }
 
 /**
- * check_builtin_commands - Check and execute built-in commands
- * @cmd: Command to check
- * Return: 1 if command is built-in, 0 otherwise
- * Description: Checks if the command is a built-in command such as 'exit'
- * or 'env'. If it is, the command is executed directly by the shell.
+ * _strncpy - Entry point
+ * Description: 'prints a determined number of array elements'
+ *
+ * @a: pointer pointing to string
+ * @b: pointer pointing to string
+ * @n: number of characters to copy
+ * Return: 0 (Success)
  */
-int check_builtin_commands(char *cmd)
+char *_strncpy(char *a, char *b, int n)
 {
-	char **env = environ;
+	int c = 0, d = n;
 
-	if (_strcmp(cmd, "exit") == 0)
+	while (d != 0)
 	{
-		exit(EXIT_SUCCESS);
-		return (1);
-	}
-	else if (_strcmp(cmd, "env") == 0)
-	{
-		while (*env)
+		*a = *b;
+		a++;
+		c++;
+		if (*b != '\0')
 		{
-			printf("%s\n", *env++);
+			b++;
 		}
-		return (1);
+		d--;
 	}
-	else if (_strcmp(cmd, "/bin/ls") == 0)
+	while (*a != '\0' && *b != '\0')
 	{
-		return (3);
+		if (n == 0)
+		{
+			break;
+		}
+		a++;
+		c++;
+		n--;
 	}
-	return (0);
+	while (c != 0)
+	{
+		a--;
+		c--;
+	}
+	return (a);
 }

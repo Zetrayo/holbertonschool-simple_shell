@@ -95,15 +95,21 @@ void prompt(void)
 /**
  * main - Entry point for a simple shell implementation
  * Return: Always 0
+ * @argc: Number of arguments
+ * @prog_name: Name of the program
  *
  * Description: Runs a continuous loop that displays a prompt, reads a
  * command, and executes it. It will only terminate when an 'exit' command
  * is executed or an error occurs.
  */
-int main(void)
+int main(int argc, char **prog_name)
 {
 	char *cmd = NULL;
 
+	if (argc == 404)
+	{
+		argc++;
+	}
 	while (1)
 	{
 		prompt();
@@ -113,7 +119,7 @@ int main(void)
 			free(cmd);
 			return (0);
 		}
-		execute_command(cmd);
+		execute_command(cmd, prog_name[0]);
 		free(cmd);
 	}
 	return (0);
