@@ -1,28 +1,46 @@
 #include "shell.h"
 
 /**
- * _strcmp - Entry point
- * Description: 'compares string to another string'
- *
- * @a: pointer pointing to string
- * @b: pointer pointing to string
- * Return: 0 (Success)
+ * _strcmp - Compares string a to string b
+ * @a: pointer pointing to string a
+ * @b: pointer pointing to string b
+ * Return: 0 if strings are equal, non-zero otherwise
  */
 int _strcmp(char *a, char *b)
 {
-	int c = 0;
-
 	while (*a == *b)
 	{
-		if (*a == '\0' && *b == '\0')
-		{
+		if (*a == '\0')
 			return (0);
-		}
 		a++;
 		b++;
 	}
-	c = (*a - *b);
-	return (c);
+	return (*a - *b);
+}
+
+/**
+ * reallocate_buffer - Reallocates memory for a buffer
+ * @buffer: pointer to the original buffer
+ * @bufsize: current size of the buffer
+ * @i: current index of the buffer
+ * Return: pointer to the reallocated buffer, or NULL on failure
+ */
+char *reallocate_buffer(char *buffer, int bufsize, int i)
+{
+	char *new_buffer;
+	int j;
+
+	new_buffer = (char *)malloc(bufsize + 1);
+	if (new_buffer == NULL)
+	{
+		fprintf(stderr, "allocation error\n");
+		free(buffer);
+		exit(EXIT_FAILURE);
+	}
+	for (j = 0; j < i; j++)
+		new_buffer[j] = buffer[j];
+	free(buffer);
+	return (new_buffer);
 }
 
 /**
@@ -31,8 +49,8 @@ int _strcmp(char *a, char *b)
  */
 char *read_command(void)
 {
-	char *buffer, *new_buffer;
-	int bytes_read, i = 0, j, bufsize = BUFSIZE;
+	char *buffer;
+	int bytes_read, i = 0, bufsize = BUFSIZE;
 
 	buffer = (char *)malloc(bufsize);
 	if (buffer == NULL)
@@ -57,17 +75,7 @@ char *read_command(void)
 		if (i >= bufsize - 1)
 		{
 			bufsize += 1;
-			new_buffer = (char *)malloc(bufsize);
-			if (new_buffer == NULL)
-			{
-				fprintf(stderr, "allocation error\n");
-				free(buffer);
-				exit(EXIT_FAILURE);
-			}
-			for (j = 0; j < i; j++)
-				new_buffer[j] = buffer[j];
-			free(buffer);
-			buffer = new_buffer;
+			buffer = reallocate_buffer(buffer, bufsize, i);
 		}
 	}
 	return (buffer);
@@ -81,56 +89,39 @@ char *read_command(void)
 char *_getenv(const char *name)
 {
 	int i, j;
-	char *value;
-
-	if (!name)
-		return (NULL);
 
 	for (i = 0; environ[i]; i++)
 	{
 		j = 0;
 		if (name[j] == environ[i][j])
 		{
-			while (name[j])
-			{
-				if (name[j] != environ[i][j])
-					break;
-
+			while (name[j] && name[j] == environ[i][j])
 				j++;
-			}
-			if (name[j] == '\0')
-			{
-				value = (environ[i] + j + 1);
-				return (value);
-			}
+			if (name[j] == '\0' && environ[i][j] == '=')
+				return (environ[i] + j + 1);
 		}
 	}
-	return (0);
+	return (NULL);
 }
 
 /**
  * check_builtin_commands - Check and execute built-in commands
  * @cmd: Command to check
  * Return: 1 if command is built-in, 0 otherwise
- * Description: Checks if the command is a built-in command such as 'exit'
- * or 'env'. If it is, the command is executed directly by the shell.
  */
 int check_builtin_commands(char *cmd)
 {
-	char **env = environ;
-
 	if (_strcmp(cmd, "exit") == 0)
 	{
 		free(cmd);
 		exit(EXIT_SUCCESS);
-		return (1);
 	}
 	else if (_strcmp(cmd, "env") == 0)
 	{
+		char **env = environ;
+
 		while (*env)
-		{
 			printf("%s\n", *env++);
-		}
 		return (1);
 	}
 	return (0);
