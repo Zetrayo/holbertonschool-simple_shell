@@ -55,6 +55,10 @@ int prepare_command(char *cmd, char *full_path, char **argv)
 	int argc = 0;
 	char *token, *path;
 
+	if (check_builtin_commands(cmd))
+	{
+		return (1);
+	}
 	while (*cmd == ' ' || *cmd == '\t')
 		cmd++;
 
@@ -69,9 +73,6 @@ int prepare_command(char *cmd, char *full_path, char **argv)
 	argv[argc] = NULL;
 	if (argc == 0)
 		return (-1);
-
-	if (check_builtin_commands(argv[0]) == 1)
-		return (1);
 
 	if (argv[0][0] == '/' || argv[0][0] == '.' || strncmp(argv[0], "../", 3) == 0)
 	{
