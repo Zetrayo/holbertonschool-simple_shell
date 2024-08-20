@@ -55,7 +55,7 @@ char *read_command(void)
 	buffer = (char *)malloc(bufsize);
 	if (buffer == NULL)
 	{
-		free(buffer);
+		fprintf(stderr, "allocation error\n");
 		exit(EXIT_FAILURE);
 	}
 	while (1)
@@ -74,7 +74,7 @@ char *read_command(void)
 		i++;
 		if (i >= bufsize - 1)
 		{
-			bufsize += 1;
+			bufsize *= 2;
 			buffer = reallocate_buffer(buffer, bufsize, i);
 		}
 	}
