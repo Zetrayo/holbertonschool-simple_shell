@@ -100,33 +100,15 @@ int prepare_command(char *cmd, char *full_path, char **argv)
  */
 char *_strncpy(char *a, char *b, int n)
 {
-	int c = 0, d = n;
+	int i = 0;
 
-	while (d != 0)
+	for (i = 0; i < n && b[i] != '\0'; i++)
 	{
-		*a = *b;
-		a++;
-		c++;
-		if (*b != '\0')
-		{
-			b++;
-		}
-		d--;
+		a[i] = b[i];
 	}
-	while (*a != '\0' && *b != '\0')
+	for (; i < n; i++)
 	{
-		if (n == 0)
-		{
-			break;
-		}
-		a++;
-		c++;
-		n--;
-	}
-	while (c != 0)
-	{
-		a--;
-		c--;
+		a[i] = '\0';
 	}
 	return (a);
 }
