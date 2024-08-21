@@ -18,7 +18,7 @@ void execute_command(char *command, char *prog_name)
 	if (command_check == -1)
 	{
 		fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0]);
-		exit(127);
+		return;
 	}
 	else if (command_check == 1)
 	{
