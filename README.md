@@ -3,19 +3,23 @@
 # Table of Contents
 
 1. [Description](#description)
-2. [Fonctionnalités](#fonctionnalités)
-3. [Compilation](#compilation)
-4. [Utilisation](#utilisation)
+2. [Flowchart](#flowchart)
+3. [Fonctionnalités](#fonctionnalités)
+4. [Compilation](#compilation)
+5. [Utilisation](#utilisation)
    - [Mode interactif](#mode-interactif)
    - [Mode non-interactif](#mode-non-interactif)
-5. [Exigences du Projet](#exigences-du-projet)
-6. [Liste des Fonctions et Appels Système Autorisés](#liste-des-fonctions-et-appels-système-autorisés)
-7. [Auteurs](#auteurs)
-8. [Références](#références)
+6. [Exigences du Projet](#exigences-du-projet)
+7. [Liste des Fonctions et Appels Système Autorisés](#liste-des-fonctions-et-appels-système-autorisés)
+8. [Auteurs](#auteurs)
+9. [Références](#références)
 
 ## Description
 
 Ce projet consiste à créer un interpréteur de commandes simple, similaire au shell UNIX traditionnel. L'objectif est de comprendre le fonctionnement interne des shells, d'apprendre à gérer les processus, les appels système, et à manipuler l'environnement d'exécution. Le projet suit les directives de style de code Betty et se conforme aux spécifications pour fonctionner sur Ubuntu 20.04 LTS.
+
+## Flowchart
+![alt text](SimpleShellFlowchart.jpg)
 
 ## Fonctionnalités
 
@@ -69,7 +73,6 @@ $
 - **Compilation** : Le projet sera compilé sur Ubuntu 20.04 LTS avec `gcc` et les options `-Wall -Werror -Wextra -pedantic -std=gnu89`.
 - **Normes de code** : Le code doit suivre les normes de style Betty.
 - **Pas de fuites de mémoire** : Le shell doit être exempt de fuites de mémoire.
-- **Maximum 5 fonctions par fichier**.
 - **Include guards** : Tous les fichiers d'en-tête doivent être protégés contre les inclusions multiples.
 
 ## Liste des Fonctions et Appels Système Autorisés
@@ -83,7 +86,7 @@ $
 ## Auteurs
 
 - **Guney TASDELEN** <guney.tasdelen74@gmail.com>
-- **José PUERTAS** <jose@gmail.com>
+- **José PUERTAS** <josefeliciano.com98@gmail.com>
 
 ## Références
 
