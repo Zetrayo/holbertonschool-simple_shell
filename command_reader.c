@@ -1,34 +1,35 @@
 #include "shell.h"
 
 /**
- * _strcmp - Compares string a to string b
- * @a: pointer pointing to string a
- * @b: pointer pointing to string b
- * Return: 0 if strings are equal, non-zero otherwise
+ * _strcmp - Compares two strings
+ * @str: pointer pointing to string
+ * @str_two: pointer pointing to string
+ * Return: 0 if strings are equal,
+ * difference in lenght otherwise
  */
-int _strcmp(char *a, char *b)
+int _strcmp(char *str, char *str_two)
 {
-	while (*a == *b)
+	while (*str == *str_two)
 	{
-		if (*a == '\0')
+		if (*str == '\0')
 			return (0);
-		a++;
-		b++;
+		str++;
+		str_two++;
 	}
-	return (*a - *b);
+	return (*str - *str_two);
 }
 
 /**
  * reallocate_buffer - Reallocates memory for a buffer
  * @buffer: pointer to the original buffer
  * @bufsize: current size of the buffer
- * @i: current index of the buffer
+ * @index: current current_index of the buffer
  * Return: pointer to the reallocated buffer, or NULL on failure
  */
-char *reallocate_buffer(char *buffer, int bufsize, int i)
+char *reallocate_buffer(char *buffer, int bufsize, int index)
 {
 	char *new_buffer;
-	int j;
+	int current_index;
 
 	new_buffer = (char *)malloc(bufsize + 1);
 	if (new_buffer == NULL)
@@ -37,8 +38,8 @@ char *reallocate_buffer(char *buffer, int bufsize, int i)
 		free(buffer);
 		exit(EXIT_FAILURE);
 	}
-	for (j = 0; j < i; j++)
-		new_buffer[j] = buffer[j];
+	for (current_index = 0; current_index < index; current_index++)
+		new_buffer[current_index] = buffer[current_index];
 	free(buffer);
 	return (new_buffer);
 }
@@ -106,20 +107,20 @@ char *_getenv(const char *name)
 
 /**
  * check_builtin_commands - Check and execute built-in commands
- * @cmd: Command to check
+ * @command: Command to check
  * Return: 1 if command is built-in, 0 otherwise
  */
-int check_builtin_commands(char *cmd)
+int check_builtin_commands(char *command)
 {
-	if (_strcmp(cmd, "exit") == 0)
+	char **env = environ;
+
+	if (_strcmp(command, "exit") == 0)
 	{
-		free(cmd);
+		free(command);
 		exit(EXIT_SUCCESS);
 	}
-	else if (_strcmp(cmd, "env") == 0)
+	else if (_strcmp(command, "env") == 0)
 	{
-		char **env = environ;
-
 		while (*env)
 			printf("%s\n", *env++);
 		return (1);

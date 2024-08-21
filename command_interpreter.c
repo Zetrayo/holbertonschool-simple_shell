@@ -2,25 +2,25 @@
 
 /**
  * execute_command - Executes a command or launches an appropriate executable
- * @cmd: Full command line input
+ * @command: Full command line input
  * @prog_name: Name of the program
  * Description: Takes a full command line input, tokenizes it to form arguments
  * and if the command is not a built-in command, it forks a child process and
  * executes the command using execve.
  */
-void execute_command(char *cmd, char *prog_name)
+void execute_command(char *command, char *prog_name)
 {
 	pid_t pid;
-	int status, mem;
+	int status, command_check;
 	char full_path[BUFSIZE], *argv[BUFSIZE];
 
-	mem = prepare_command(cmd, full_path, argv);
-	if (mem == -1)
+	command_check = prepare_command(command, full_path, argv);
+	if (command_check == -1)
 	{
 		fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0]);
-		exit(127);		/* Return status code 127 for order not found */
+		exit(127);
 	}
-	else if (mem == 1)
+	else if (command_check == 1)
 	{
 		return;
 	}
@@ -45,26 +45,26 @@ void execute_command(char *cmd, char *prog_name)
 
 /**
  * prepare_command - Prepares the command and its arguments
- * @cmd: Command string to process
+ * @command: Command string to process
  * @full_path: Buffer to store the full path of the command
  * @argv: Array to store the command and its arguments
  * Return: 0 on success, -1 if the command is not found
  */
-int prepare_command(char *cmd, char *full_path, char **argv)
+int prepare_command(char *command, char *full_path, char **argv)
 {
 	int argc = 0;
 	char *token, *path;
 
-	if (check_builtin_commands(cmd))
+	if (check_builtin_commands(command))
 	{
 		return (1);
 	}
-	while (*cmd == ' ' || *cmd == '\t')
-		cmd++;
+	while (*command == ' ' || *command == '\t')
+		command++;
 
-	if (*cmd == '\0')
+	if (*command == '\0')
 		return (1);
-	token = strtok(cmd, " ");
+	token = strtok(command, " ");
 	while (token != NULL && argc < BUFSIZE - 1)
 	{
 		argv[argc++] = token;
@@ -92,24 +92,24 @@ int prepare_command(char *cmd, char *full_path, char **argv)
 
 /**
  * _strncpy - Entry point
- * Description: 'prints a determined number of array elements'
- *
- * @a: pointer pointing to string
- * @b: pointer pointing to string
+ * Description: copies a certain number of chars
+ * from one string to another
+ * @str: pointer pointing to string
+ * @str_two: pointer pointing to string
  * @n: number of characters to copy
  * Return: 0 (Success)
  */
-char *_strncpy(char *a, char *b, int n)
+char *_strncpy(char *str, char *str_two, int n)
 {
-	int i = 0;
+	int index = 0;
 
-	for (i = 0; i < n && b[i] != '\0'; i++)
+	for (index = 0; index < n && str_two[index] != '\0'; index++)
 	{
-		a[i] = b[i];
+		str[index] = str_two[index];
 	}
-	for (; i < n; i++)
+	for (; index < n; index++)
 	{
-		a[i] = '\0';
+		str[index] = '\0';
 	}
-	return (a);
+	return (str);
 }

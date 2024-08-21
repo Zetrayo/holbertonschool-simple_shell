@@ -3,42 +3,38 @@
 /**
  * _strlen - Entry point
  * Description: 'counts string lenght'
- *
- * @a: pointer pointing to string
- * Return: 0 (Success)
+ * @str: pointer pointing to string
+ * Return: lenght
  */
-
-int _strlen(char *a)
+int _strlen(char *str)
 {
-	int c = 0;
+	int lenght = 0;
 
-	while (a[c] != '\0')
+	while (str[lenght] != '\0')
 	{
-		c++;
+		lenght++;
 	}
-	return (c);
+	return (lenght);
 }
 
 /**
  * _strcpy - Entry point
  * Description: 'copies a string into a new string'
- *
- * @dest: pointer pointing to string
- * @src: pointer pointing to string
- * Return: 0 (Success)
+ * @copy: pointer pointing to string
+ * @str: pointer pointing to string
+ * Return: new string copy
  */
-
-char *_strcpy(char *dest, char *src)
+char *_strcpy(char *copy, char *str)
 {
-	int c = 0;
+	int index = 0;
 
-	while (src[c] != '\0')
+	while (str[index] != '\0')
 	{
-		dest[c] = src[c];
-		c++;
+		copy[index] = str[index];
+		index++;
 	}
-	dest[c] = '\0';
-	return (dest);
+	copy[index] = '\0';
+	return (copy);
 }
 
 /**
@@ -54,7 +50,7 @@ int find_path(char *result_path, size_t size, char *command, char *path)
 	char *path_copy;
 	char *token;
 	char current_path[BUFSIZE];
-	size_t j;
+	size_t index;
 
 	if (command == NULL || path == NULL || result_path == NULL)
 		return (-1);
@@ -70,9 +66,9 @@ int find_path(char *result_path, size_t size, char *command, char *path)
 		sprintf(current_path, "%s/%s", token, command);
 		if (access(current_path, X_OK) == 0)
 		{
-			for (j = 0; j < size; j++)
+			for (index = 0; index < size; index++)
 			{
-				result_path[j] = current_path[j];
+				result_path[index] = current_path[index];
 			}
 			free(path_copy);
 			return (0);
@@ -85,6 +81,7 @@ int find_path(char *result_path, size_t size, char *command, char *path)
 
 /**
  * prompt - Displays a prompt for the user
+ * upon entering interactive mode
  */
 void prompt(void)
 {
@@ -97,7 +94,6 @@ void prompt(void)
  * Return: Always 0
  * @argc: Number of arguments
  * @prog_name: Name of the program
- *
  * Description: Runs a continuous loop that displays a prompt, reads a
  * command, and executes it. It will only terminate when an 'exit' command
  * is executed or an error occurs.
@@ -107,9 +103,10 @@ int main(int argc, char **prog_name)
 	char *cmd = NULL;
 	int interactive = isatty(STDIN_FILENO);
 
-	if (argc == 404)
+	if (argc < 0)
 	{
-		argc++;
+		printf("Error");
+		return (0);
 	}
 	while (1)
 	{
