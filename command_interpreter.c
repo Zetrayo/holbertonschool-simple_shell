@@ -19,7 +19,7 @@ int execute_command(char *command, char *prog_name)
 	if (command_check == -1)
 	{
 		fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0]);
-		return (127);
+		exit(127);
 	}
 	else if (command_check == 1)
 	{
@@ -42,7 +42,7 @@ int execute_command(char *command, char *prog_name)
 	{
 		waitpid(pid, &status, 0);
 	}
-    return (0);
+	return (0);
 }
 
 /**
