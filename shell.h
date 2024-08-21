@@ -28,7 +28,7 @@ typedef struct list_path
 /* Function Prototypes */
 void prompt(void);
 char *read_command(void);
-int execute_command(char *command, char *prog_name);
+void execute_command(char *command, char *prog_name);
 int check_builtin_commands(char *command);
 char *_getenv(const char *name);
 int find_path(char *result_path, size_t size, char *command, char *path);

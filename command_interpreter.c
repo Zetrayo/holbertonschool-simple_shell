@@ -9,7 +9,7 @@
  * executes the command using execve.
  * Return: Returns 127 when command not found, 0 otherwise
  */
-int execute_command(char *command, char *prog_name)
+void execute_command(char *command, char *prog_name)
 {
 	pid_t pid;
 	int status, command_check;
@@ -23,7 +23,7 @@ int execute_command(char *command, char *prog_name)
 	}
 	else if (command_check == 1)
 	{
-		return (0);
+		return;
 	}
 	pid = fork();
 	if (pid == 0)
@@ -31,7 +31,7 @@ int execute_command(char *command, char *prog_name)
 		if (execve(full_path, argv, environ) == -1)
 		{
 			perror("prog_name");
-			exit(EXIT_FAILURE);
+			exit(2);
 		}
 	}
 	else if (pid < 0)
@@ -41,8 +41,14 @@ int execute_command(char *command, char *prog_name)
 	else
 	{
 		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+		{
+			if (WEXITSTATUS(status) != 0)
+			{
+				exit(WEXITSTATUS(status));
+			}
+		}
 	}
-	return (0);
 }
 
 /**
