@@ -7,8 +7,9 @@
  * Description: Takes a full command line input, tokenizes it to form arguments
  * and if the command is not a built-in command, it forks a child process and
  * executes the command using execve.
+ * Return: Returns 127 when command not found, 0 otherwise
  */
-void execute_command(char *command, char *prog_name)
+int execute_command(char *command, char *prog_name)
 {
 	pid_t pid;
 	int status, command_check;
@@ -18,11 +19,11 @@ void execute_command(char *command, char *prog_name)
 	if (command_check == -1)
 	{
 		fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0]);
-		return;
+		return (127);
 	}
 	else if (command_check == 1)
 	{
-		return;
+		return (0);
 	}
 	pid = fork();
 	if (pid == 0)
@@ -41,6 +42,7 @@ void execute_command(char *command, char *prog_name)
 	{
 		waitpid(pid, &status, 0);
 	}
+    return (0);
 }
 
 /**
