@@ -1,6 +1,6 @@
 .TH SIMPLE_SHELL 1 "August 2024" "1.0" "Simple Shell Manual"
 .SH NAME
-simple_shell \- Un interpréteur de commandes UNIX simple
+simple_shell \- A simple UNIX command interpreter
 
 .SH SYNOPSIS
 .B simple_shell
@@ -8,38 +8,38 @@ simple_shell \- Un interpréteur de commandes UNIX simple
 
 .SH DESCRIPTION
 .B simple_shell
-est un interpréteur de commandes UNIX simple qui imite le comportement des shells UNIX standards. Il lit les commandes de l'utilisateur, les analyse, puis les exécute comme si elles étaient entrées dans un shell standard.
+is a simple UNIX command interpreter that mimics the behavior of standard UNIX shells. It reads user commands, parses them, and then executes them as if they were entered in a standard shell.
 
 .B simple_shell
-gère l'exécution des commandes intégrées telles que \fBexit\fR et \fBenv\fR, ainsi que des commandes externes trouvées dans le système via la variable PATH. Le shell prend en charge la gestion des processus, la gestion des erreurs basiques et l'analyse des arguments.
+handles the execution of built-in commands such as \fBexit\fR and \fBenv\fR, as well as external commands found in the system via the PATH variable. The shell supports process management, basic error handling, and argument parsing.
 
 .SH OPTIONS
 .B simple_shell
-ne prend aucune option en ligne de commande. Il fonctionne de manière interactive par défaut, attendant les entrées de l'utilisateur dans une boucle jusqu'à ce que l'utilisateur quitte le shell.
+takes no command-line options. It operates interactively by default, waiting for user input in a loop until the user exits the shell.
 
-.SH COMMANDES INTÉGRÉES
-Les commandes suivantes sont intégrées dans
+.SH BUILT-IN COMMANDS
+The following commands are built into
 .B simple_shell :
 
 .TP
 .B exit
-Quitte le shell. Usage :
+Exits the shell. Usage:
 .I "exit [status]"
-Quitte le shell avec le statut spécifié. Si aucun statut n'est donné, le shell se ferme avec le statut de la dernière commande exécutée.
+Exits the shell with the specified status. If no status is given, the shell closes with the status of the last executed command.
 
 .TP
 .B env
-Affiche les variables d'environnement actuelles. Usage :
+Displays the current environment variables. Usage:
 .I "env"
-Imprime toutes les variables d'environnement disponibles.
+Prints all available environment variables.
 
-.SH UTILISATION
+.SH USAGE
 
-Lorsque
+When
 .B simple_shell
-est lancé, il affiche un prompt où l'utilisateur peut entrer des commandes. Le shell exécute ensuite la commande et retourne au prompt.
+is launched, it displays a prompt where the user can enter commands. The shell then executes the command and returns to the prompt.
 
-Par exemple :
+For example:
 
 .EX
 $ simple_shell
@@ -56,28 +56,28 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 $
 .EE
 
-.SH CODE DE SORTIE
+.SH EXIT STATUS
 
 .B simple_shell
-se termine avec le statut de la dernière commande exécutée. Si la commande
+exits with the status of the last executed command. If the
 .B exit
-est utilisée, le shell se termine avec le statut spécifié par l'utilisateur.
+command is used, the shell exits with the status specified by the user.
 
-.SH FICHIERS
+.SH FILES
 
 .B simple_shell
-ne nécessite aucun fichier de configuration externe. Toutes les fonctionnalités sont implémentées dans l'exécutable.
+requires no external configuration files. All functionalities are implemented in the executable.
 
 .SH BUGS
-Aucun bug connu à ce jour. Si vous rencontrez des problèmes, veuillez les signaler aux mainteneurs du projet.
+No known bugs to date. If you encounter any issues, please report them to the project maintainers.
 
-.SH AUTEUR
-Cette page de manuel a été rédigée par José Puertas et Guney Tasdelen dans le cadre du projet Simple Shell pour l'école Holberton.
+.SH AUTHOR
+This manual page was written by José Puertas and Guney Tasdelen as part of the Simple Shell project for Holberton School.
 
 .SH COPYRIGHT
-Ceci est un logiciel libre; vous êtes libre de le modifier et de le redistribuer. Il n'y a AUCUNE GARANTIE, dans la mesure permise par la loi.
+This is free software; you are free to modify and redistribute it. There is NO WARRANTY, to the extent permitted by law.
 
-.SH VOIR AUSSI
+.SH SEE ALSO
 .BR bash (1),
 .BR sh (1),
 .BR zsh (1),
